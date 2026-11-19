@@ -72,112 +72,111 @@ analysis for data-cleaning and preprocessing purposes.
 
 ## Program & Output
 << Enter your code and the corresponding screenshot of the output in this section>>
-# 1. Import libraries
-import pandas as pd
-import numpy as np
-from IPython.display import display
+# 1. Import libraries  
+import pandas as pd  
+import numpy as np  
+from IPython.display import display  
 
-# 2. Load dataset
-df = pd.read_csv("heartdisease.csv")
-print("Original Dataset:")
-display(df)
+# 2. Load dataset  
+df = pd.read_csv("heartdisease.csv")  
+print("Original Dataset:")  
+display(df)  
 
-# 3. Explore dataset structure
-print("Dataset Information:")
-df.info()
+# 3. Explore dataset structure  
+print("Dataset Information:")  
+df.info()  
 
-print("\nData Types:")
-print(df.dtypes)
+print("\nData Types:")  
+print(df.dtypes)  
 
-print("\nIndividual Column Data Types:")
-for column in df.columns:
-    print(f"{column}: {df[column].dtype}")
+print("\nIndividual Column Data Types:")  
+for column in df.columns:  
+    print(f"{column}: {df[column].dtype}")  
 
-print("\nDataset Shape:", df.shape)
-print("\nColumn Names:", df.columns.tolist())
+print("\nDataset Shape:", df.shape)  
+print("\nColumn Names:", df.columns.tolist())  
 
-# 4. Check missing values and duplicates
-print("Missing Values per Column:")
-print(df.isnull().sum())
+# 4. Check missing values and duplicates  
+print("Missing Values per Column:")  
+print(df.isnull().sum())  
+  
+print("\nNumber of Duplicate Rows:")  
+print(df.duplicated().sum())  
 
-print("\nNumber of Duplicate Rows:")
-print(df.duplicated().sum())
+# 5. Summary statistics  
+print("Summary Statistics:")  
+display(df.describe(include="all"))  
 
-# 5. Summary statistics
-print("Summary Statistics:")
-display(df.describe(include="all"))
+# 6. First and last five records  
+print("First Five Records:")  
+display(df.head())  
 
-# 6. First and last five records
-print("First Five Records:")
-display(df.head())
+print("Last Five Records:")  
+display(df.tail())  
 
-print("Last Five Records:")
-display(df.tail())
-
-# 7. Sort data by age, if available
-age_col = next((c for c in df.columns if c.lower() == "age"), None)
-if age_col:
-    sorted_df = df.sort_values(by=age_col)
-    print("Dataset Sorted by Age:")
-    display(sorted_df.head())
+# 7. Sort data by age, if available  
+age_col = next((c for c in df.columns if c.lower() == "age"), None)  
+if age_col:   
+    sorted_df = df.sort_values(by=age_col)  
+    print("Dataset Sorted by Age:")  
+    display(sorted_df.head())  
 else:
-    print("Age column not found; sorting skipped.")
+    print("Age column not found; sorting skipped.")  
 
-    # 8. Group data by sex, if available
-sex_col = next((c for c in df.columns if c.lower() == "sex"), None)
-if sex_col:
-    grouped = df.groupby(sex_col)
-    print("Group Mean:")
-    display(grouped.mean(numeric_only=True))
-    print("Group Sum:")
-    display(grouped.sum(numeric_only=True))
-    print("Group Median:")
-    display(grouped.median(numeric_only=True))
-    print("Group Maximum:")
-    display(grouped.max(numeric_only=True))
-    print("Group Minimum:")
-    display(grouped.min(numeric_only=True))
-else:
-    print("Sex column not found; grouping skipped.")
+    # 8. Group data by sex, if available  
+sex_col = next((c for c in df.columns if c.lower() == "sex"), None)  
+if sex_col:  
+    grouped = df.groupby(sex_col)  
+    print("Group Mean:")  
+    display(grouped.mean(numeric_only=True))  
+    print("Group Sum:")  
+    display(grouped.sum(numeric_only=True))  
+    print("Group Median:")  
+    display(grouped.median(numeric_only=True))  
+    print("Group Maximum:")  
+    display(grouped.max(numeric_only=True))  
+    print("Group Minimum:")  
+    display(grouped.min(numeric_only=True))  
+else:  
+    print("Sex column not found; grouping skipped.")  
 
-    # 9. Mean of numeric columns
-print("Mean Values:")
-print(df.mean(numeric_only=True))
+    # 9. Mean of numeric columns  
+print("Mean Values:")  
+print(df.mean(numeric_only=True))  
 
-# 10. Rename selected columns if present
-rename_map = {
-    c: new for c, new in {
-        "age": "Age",
-        "sex": "Sex",
-        "chol": "Cholesterol",
-        "trestbps": "Blood_Pressure"
-    }.items() if c in df.columns
+# 10. Rename selected columns if present  
+rename_map = {  
+    c: new for c, new in {  
+        "age": "Age",  
+        "sex": "Sex",  
+        "chol": "Cholesterol",  
+        "trestbps": "Blood_Pressure"  
+    }.items() if c in df.columns  
 }
-df.rename(columns=rename_map, inplace=True)
-print("Renamed Columns:")
-print(df.columns.tolist())
+df.rename(columns=rename_map, inplace=True)  
+print("Renamed Columns:")  
+print(df.columns.tolist())  
 
-# 11. Fill missing numeric values with mean
-for column in df.select_dtypes(include="number").columns:
-    if df[column].isna().any():
-        df[column] = df[column].fillna(df[column].mean())
+for column in df.select_dtypes(include="number").columns:  
+    if df[column].isna().any():  
+        df[column] = df[column].fillna(df[column].mean())  
 
-# Fill missing categorical values with mode
-for column in df.select_dtypes(exclude="number").columns:
-    if df[column].isna().any():
-        modes = df[column].mode(dropna=True)
-        if not modes.empty:
-            df[column] = df[column].fillna(modes.iloc[0])
+# Fill missing categorical values with mode  
+for column in df.select_dtypes(exclude="number").columns:  
+    if df[column].isna().any():  
+        modes = df[column].mode(dropna=True)  
+        if not modes.empty:  
+            df[column] = df[column].fillna(modes.iloc[0])  
 
-print("Missing Values After Cleaning:")
-print(df.isnull().sum())
+print("Missing Values After Cleaning:")  
+print(df.isnull().sum())  
 
-# 12. Remove duplicates and display cleaned dataset
-df.drop_duplicates(inplace=True)
-print("Cleaned Dataset:")
+# 12. Remove duplicates and display cleaned dataset  
+df.drop_duplicates(inplace=True)  
+print("Cleaned Dataset:")  
 display(df)
-print("Dataset Shape After Cleaning:", df.shape)
-print("Duplicate Rows After Cleaning:", df.duplicated().sum())
+print("Dataset Shape After Cleaning:", df.shape)  
+print("Duplicate Rows After Cleaning:", df.duplicated().sum())  
 
 # 13. Save cleaned dataset
 df.to_csv("cleaned_heartdisease.csv", index=False)

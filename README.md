@@ -123,7 +123,7 @@ if age_col:
 else:
     print("Age column not found; sorting skipped.")  
 
-    # 8. Group data by sex, if available  
+    # 8. Group data by sex, if available   
 sex_col = next((c for c in df.columns if c.lower() == "sex"), None)  
 if sex_col:  
     grouped = df.groupby(sex_col)  
@@ -138,13 +138,13 @@ if sex_col:
     print("Group Minimum:")  
     display(grouped.min(numeric_only=True))  
 else:  
-    print("Sex column not found; grouping skipped.")  
+    print("Sex column not found; grouping skipped.")   
 
-    # 9. Mean of numeric columns  
-print("Mean Values:")  
-print(df.mean(numeric_only=True))  
+    # 9. Mean of numeric columns    
+print("Mean Values:")    
+print(df.mean(numeric_only=True))    
 
-# 10. Rename selected columns if present  
+# 10. Rename selected columns if present    
 rename_map = {  
     c: new for c, new in {  
         "age": "Age",  
@@ -179,9 +179,12 @@ print("Dataset Shape After Cleaning:", df.shape)
 print("Duplicate Rows After Cleaning:", df.duplicated().sum())  
 
 # 13. Save cleaned dataset
-df.to_csv("cleaned_heartdisease.csv", index=False)
-print("Cleaned dataset saved successfully as cleaned_heartdisease.csv")
+df.to_csv("cleaned_heartdisease.csv", index=False)  
+print("Cleaned dataset saved successfully as cleaned_heartdisease.csv")  
 
+
+
+## Result
 output 
 Original Dataset:
    age  sex  ... 
@@ -251,6 +254,4 @@ Cleaned dataset saved successfully!
 
 
 
-
-## Result
 
